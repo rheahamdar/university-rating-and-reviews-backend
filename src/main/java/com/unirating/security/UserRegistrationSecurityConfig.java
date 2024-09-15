@@ -22,29 +22,20 @@ public class UserRegistrationSecurityConfig{
     @Autowired
     private UserRegistrationDetailsService userDetailsService;
 
-    private final UserAuthenticationEntryPoint userAuthenticationEntryPoint;
     @Bean
     public PasswordEncoder passwordEncoder(){
         return new BCryptPasswordEncoder();
     }
     
-    // @Bean
-    // public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-    //     return http.cors()
-    //         .and().csrf().disable()
-    //         .authorizeHttpRequests()
-    //         .anyRequest()
-    //         .permitAll().and()
-    //         .formLogin().disable().build();
-    // }
-
-    // @Bean 
-    // public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception{
-    //     http
-    //         .exceptionHandling().authenticationEntryPoint(userAuthenticationEntryPoint)
-    //         .and()
-    //         .addF
-    // }
+    @Bean
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+        return http.cors()
+            .and().csrf().disable()
+            .authorizeHttpRequests()
+            .anyRequest()
+            .permitAll().and()
+            .formLogin().disable().build();
+    }
 
     @Bean
     public AuthenticationManager authManager(HttpSecurity http) throws Exception {
@@ -57,7 +48,7 @@ public class UserRegistrationSecurityConfig{
     @Bean
 	public UserDetailsService userDetailsService() {
 		UserDetails user =
-			 User.withDefaultPasswordEncoder()
+			 User.builder()
 				.username("user")
 				.password("password")
 				.roles("USER")
@@ -65,31 +56,4 @@ public class UserRegistrationSecurityConfig{
 
 		return new InMemoryUserDetailsManager(user);
 	}
-
-    // @Bean
-	// public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-	// 	http
-	// 		.authorizeHttpRequests((requests) -> requests
-	// 			.requestMatchers("/login", "/register","/review").permitAll()
-	// 			.anyRequest().authenticated()
-	// 		)
-	// 		.formLogin((form) -> form
-	// 			.loginPage("/login")
-	// 			.permitAll()
-	// 		)
-	// 		.logout((logout) -> logout.permitAll());
-
-	// 	return http.build();
-	// }
-
-    // @Bean
-    // public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-    //     return http.cors()
-    //         .and().csrf().disable()
-    //         .authorizeHttpRequests()
-    //         .requestMatchers("/register", "/login","/reviews").permitAll()
-    //         .anyRequest().authenticated()
-    //         .and()
-    //         .formLogin().loginPage("/login").permitAll().and().build();
-    // }
 }

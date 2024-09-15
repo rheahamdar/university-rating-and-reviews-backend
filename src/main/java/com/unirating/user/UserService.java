@@ -41,6 +41,19 @@ public class UserService implements IUserService {
         return userRepository.save(newUser);
     }
 
+    public User registerUserForgotPassword(RegistrationRequest request) {
+        Optional<User> user = this.findByEmail(request.email());
+        if (!user.isPresent()){
+            throw new UserAlreadyExistsException(
+                    "User with email "+ request.email() + " doesn't exist. Please sign up.");
+        }
+
+        String email = request.email();
+        User newUser = this.findByEmail(email).get();
+        newUser.setPassword(passwordEncoder.encode(request.password()));
+        return userRepository.save(newUser);
+     }
+
     @Override
     public Optional<User> findByEmail(String email) {
         return userRepository.findByEmail(email);

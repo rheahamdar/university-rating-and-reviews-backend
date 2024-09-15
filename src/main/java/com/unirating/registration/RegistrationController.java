@@ -27,6 +27,12 @@ public class RegistrationController {
         return ResponseEntity.ok("Registration successful! Please check your email to verify your account.");
     }
 
+    @PostMapping("/forgot-password")
+    public ResponseEntity<String> registerUserForgotPassword(@RequestBody RegistrationRequest registrationRequest, final HttpServletRequest request){
+        User user = userService.registerUserForgotPassword(registrationRequest);
+        return ResponseEntity.ok("Registration successful!");
+    }
+
     @GetMapping("/verifyEmail")
     public ResponseEntity<String> verifyEmail(@RequestParam("token") String token){
         VerificationToken theToken = tokenRepository.findByToken(token);

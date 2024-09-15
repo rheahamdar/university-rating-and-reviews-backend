@@ -28,7 +28,7 @@ public class LoginService {
                 throw new RuntimeException("please verify your email");
             }
             if (passwordEncoder.matches(loginRequest.getPassword(), user.getPassword())) {
-                return "login successful";
+                return loginRequest.getEmail();
             }
         }
         throw new RuntimeException("Invalid email or password");
